@@ -49,6 +49,7 @@ export function AppSidebar() {
         </Link>
       </SidebarHeader>
       <SidebarContent>
+        <nav aria-label="Main navigation">
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -65,6 +66,7 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+        </nav>
         <SidebarSeparator />
         <SidebarGroup>
           <SidebarGroupLabel>You</SidebarGroupLabel>

@@ -61,7 +61,7 @@ export function VideoMeta({ video }: VideoMetaProps) {
               <span className="text-xs">{formatViews(video.likes)}</span>
             </Button>
             <Separator orientation="vertical" className="h-6" />
-            <Button variant="ghost" size="icon-sm" className="rounded-none px-3">
+            <Button variant="ghost" size="icon-sm" className="rounded-none px-3" aria-label="Dislike">
               <ThumbsDown className="size-4" />
             </Button>
           </div>
@@ -69,10 +69,10 @@ export function VideoMeta({ video }: VideoMetaProps) {
             <Share2 className="size-4" />
             <span className="hidden sm:inline">Share</span>
           </Button>
-          <Button variant="secondary" size="icon-sm" className="rounded-full">
+          <Button variant="secondary" size="icon-sm" className="rounded-full" aria-label="Download">
             <Download className="size-4" />
           </Button>
-          <Button variant="ghost" size="icon-sm">
+          <Button variant="ghost" size="icon-sm" aria-label="More actions">
             <MoreHorizontal className="size-4" />
           </Button>
         </div>

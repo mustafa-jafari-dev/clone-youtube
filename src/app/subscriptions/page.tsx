@@ -1,13 +1,15 @@
 "use client"
 
-import Link from "next/link"
-import { AlertCircle, Loader2, LogIn, Tv } from "lucide-react"
+import { LogIn, Tv } from "lucide-react"
 
 import { useAuth } from "@/features/auth/queries"
 import { useSubscriptionsFeed } from "@/features/subscriptions/queries"
 import { VideoCard } from "@/components/shared/video-card"
+import { VideoGridLayout } from "@/components/shared/video-grid-layout"
+import { VideoGridSkeleton } from "@/components/shared/video-card-skeleton"
+import { ErrorState } from "@/components/shared/error-state"
+import { EmptyState } from "@/components/shared/empty-state"
 import { Button } from "@/components/ui/button"
-import { Skeleton } from "@/components/ui/skeleton"
 import {
   Dialog,
   DialogContent,
@@ -48,36 +50,22 @@ export default function SubscriptionsPage() {
   }
 
   return (
-    <div className="p-4">
+    <section className="p-4">
       <h1 className="mb-4 text-lg font-semibold">Latest from subscriptions</h1>
 
       {isLoading ? (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="space-y-2">
-              <Skeleton className="aspect-video w-full rounded-xl" />
-              <Skeleton className="h-4 w-2/3" />
-            </div>
-          ))}
-        </div>
+        <VideoGridSkeleton />
       ) : error ? (
-        <div className="flex flex-col items-center gap-3 py-20 text-muted-foreground">
-          <AlertCircle className="size-12" />
-          <p className="text-lg font-medium">Something went wrong</p>
-        </div>
+        <ErrorState title="Something went wrong" />
       ) : !videos || videos.length === 0 ? (
-        <div className="flex flex-col items-center gap-3 py-20 text-muted-foreground">
-          <Tv className="size-12" />
-          <p className="text-lg font-medium">No videos yet</p>
-          <p className="text-sm">Subscribe to channels to see their latest videos.</p>
-        </div>
+        <EmptyState icon={Tv} title="No videos yet" message="Subscribe to channels to see their latest videos." />
       ) : (
-        <div className="grid grid-cols-1 gap-4 gap-y-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <VideoGridLayout>
           {videos.map((video) => (
             <VideoCard key={video.id} video={video} />
           ))}
-        </div>
+        </VideoGridLayout>
       )}
-    </div>
+    </section>
   )
 }

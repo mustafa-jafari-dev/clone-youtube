@@ -1,15 +1,26 @@
-import { comments } from "./mock-data"
+import { delay } from "@/lib/utils"
+import { USE_REAL_API, youtubeFetch } from "@/lib/youtube-api"
+import type { YouTubeCommentItem } from "@/lib/youtube-api"
+import { mapYouTubeComment } from "@/services/mappers"
 import type { Comment } from "@/types/comment"
+import { comments as mockComments } from "./mock-data"
 
-function delay(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms))
-}
-
-let commentIdCounter = comments.length
+let commentIdCounter = mockComments.length
 
 export async function getCommentsByVideoId(videoId: string): Promise<Comment[]> {
+  if (USE_REAL_API) {
+    try {
+      const data = await youtubeFetch<YouTubeCommentItem>("commentThreads", {
+        part: "snippet",
+        videoId,
+        maxResults: "20",
+        order: "relevance",
+      })
+      return (data.items ?? []).map(mapYouTubeComment)
+    } catch {}
+  }
   await delay(250)
-  return comments.filter((c) => c.videoId === videoId)
+  return mockComments.filter((c) => c.videoId === videoId)
 }
 
 export async function addComment(
@@ -17,6 +28,11 @@ export async function addComment(
   content: string,
   userName: string,
 ): Promise<Comment> {
+  if (USE_REAL_API) {
+    try {
+      throw new Error("Adding comments requires OAuth authentication")
+    } catch {}
+  }
   await delay(400)
   commentIdCounter++
 

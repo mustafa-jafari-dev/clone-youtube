@@ -10,11 +10,15 @@ interface VideoCardProps {
 
 export function VideoCard({ video }: VideoCardProps) {
   return (
-    <Link href={`/watch/${video.id}`} className="group block space-y-2">
+    <Link
+      href={`/watch/${video.id}`}
+      className="group block space-y-2"
+      aria-label={`${video.title} by ${video.channel.name}`}
+    >
       <div className="relative aspect-video overflow-hidden rounded-xl bg-muted">
         <img
           src={video.thumbnailUrl}
-          alt={video.title}
+          alt=""
           className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
           loading="lazy"
         />
@@ -24,8 +28,8 @@ export function VideoCard({ video }: VideoCardProps) {
       </div>
       <div className="flex gap-3">
         <Avatar size="sm" className="mt-0.5 shrink-0">
-          <AvatarImage src={video.channel.avatarUrl} alt={video.channel.name} />
-          <AvatarFallback>{video.channel.name[0]}</AvatarFallback>
+          <AvatarImage src={video.channel.avatarUrl} alt="" />
+          <AvatarFallback aria-hidden>{video.channel.name[0]}</AvatarFallback>
         </Avatar>
         <div className="min-w-0 flex-1">
           <h3 className="line-clamp-2 text-sm font-medium leading-5">

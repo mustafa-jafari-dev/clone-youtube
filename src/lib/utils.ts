@@ -10,3 +10,7 @@ export function formatViews(views: number): string {
   if (views >= 1_000) return `${(views / 1_000).toFixed(1)}K`
   return views.toString()
 }
+
+export function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}

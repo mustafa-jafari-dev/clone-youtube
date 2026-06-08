@@ -2,7 +2,6 @@
 
 import { useParams } from "next/navigation"
 import { formatDistanceToNow } from "date-fns"
-import { AlertCircle, Loader2 } from "lucide-react"
 
 import { useChannel, useChannelVideos } from "@/features/channel/queries"
 import { formatViews } from "@/lib/utils"
@@ -10,28 +9,35 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { VideoCard } from "@/components/shared/video-card"
+import { VideoGridLayout } from "@/components/shared/video-grid-layout"
+import { VideoGridSkeleton } from "@/components/shared/video-card-skeleton"
+import { ErrorState } from "@/components/shared/error-state"
+import { EmptyState } from "@/components/shared/empty-state"
+import { Film } from "lucide-react"
+
+function ChannelSkeleton() {
+  return (
+    <div>
+      <Skeleton className="h-48 w-full sm:h-64" />
+      <div className="flex flex-col gap-4 px-4 pb-6 sm:flex-row sm:items-start sm:gap-6 sm:px-6">
+        <Skeleton className="-mt-10 size-24 rounded-full border-4 border-background sm:-mt-14 sm:size-32" />
+        <div className="mt-4 flex-1 space-y-3 sm:mt-10">
+          <Skeleton className="h-8 w-64" />
+          <Skeleton className="h-4 w-48" />
+          <Skeleton className="h-4 w-96" />
+        </div>
+      </div>
+    </div>
+  )
+}
 
 export default function ChannelPage() {
   const params = useParams<{ channelId: string }>()
   const { data: channel, isLoading: loadingChannel, error: channelError } = useChannel(params.channelId)
   const { data: videos, isLoading: loadingVideos } = useChannelVideos(params.channelId)
 
-  if (loadingChannel) {
-    return (
-      <div className="flex items-center justify-center py-20">
-        <Loader2 className="size-8 animate-spin text-muted-foreground" />
-      </div>
-    )
-  }
-
-  if (channelError || !channel) {
-    return (
-      <div className="flex flex-col items-center justify-center gap-3 py-20 text-muted-foreground">
-        <AlertCircle className="size-12" />
-        <p className="text-lg font-medium">Channel not found</p>
-      </div>
-    )
-  }
+  if (loadingChannel) return <ChannelSkeleton />
+  if (channelError || !channel) return <ErrorState title="Channel not found" />
 
   return (
     <div>
@@ -73,27 +79,20 @@ export default function ChannelPage() {
         </div>
       </div>
 
-      <div className="border-t px-4 py-4 sm:px-6">
+      <section className="border-t px-4 py-4 sm:px-6" aria-label="Videos">
         <h2 className="mb-4 text-lg font-semibold">Videos</h2>
         {loadingVideos ? (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="space-y-2">
-                <Skeleton className="aspect-video w-full rounded-xl" />
-                <Skeleton className="h-4 w-2/3" />
-              </div>
-            ))}
-          </div>
+          <VideoGridSkeleton count={4} />
         ) : !videos || videos.length === 0 ? (
-          <p className="py-8 text-center text-sm text-muted-foreground">No videos yet.</p>
+          <EmptyState icon={Film} title="No videos yet" />
         ) : (
-          <div className="grid grid-cols-1 gap-4 gap-y-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <VideoGridLayout>
             {videos.map((video) => (
               <VideoCard key={video.id} video={video} />
             ))}
-          </div>
+          </VideoGridLayout>
         )}
-      </div>
+      </section>
     </div>
   )
 }

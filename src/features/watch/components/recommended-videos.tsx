@@ -1,5 +1,8 @@
+"use client"
+
 import Link from "next/link"
 import { formatDistanceToNow } from "date-fns"
+import { Film } from "lucide-react"
 
 import type { VideoWithChannel } from "@/services/api"
 import { useRecommendedVideos } from "@/features/watch/queries"
@@ -12,7 +15,7 @@ function RecommendedCard({ video }: { video: VideoWithChannel }) {
       <div className="relative aspect-video h-[94px] w-[168px] shrink-0 overflow-hidden rounded-lg bg-muted">
         <img
           src={video.thumbnailUrl}
-          alt={video.title}
+          alt=""
           className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
           loading="lazy"
         />
@@ -60,9 +63,16 @@ export function RecommendedVideos({ currentVideoId }: RecommendedVideosProps) {
     <aside className="space-y-3">
       <h2 className="text-lg font-semibold">Recommended</h2>
       <div className="space-y-3">
-        {isLoading
-          ? Array.from({ length: 5 }).map((_, i) => <RecommendedCardSkeleton key={i} />)
-          : videos?.map((video) => <RecommendedCard key={video.id} video={video} />)}
+        {isLoading ? (
+          Array.from({ length: 5 }).map((_, i) => <RecommendedCardSkeleton key={i} />)
+        ) : !videos || videos.length === 0 ? (
+          <div className="flex flex-col items-center gap-2 py-8 text-muted-foreground">
+            <Film className="size-8" />
+            <p className="text-sm">No recommendations.</p>
+          </div>
+        ) : (
+          videos.map((video) => <RecommendedCard key={video.id} video={video} />)
+        )}
       </div>
     </aside>
   )
