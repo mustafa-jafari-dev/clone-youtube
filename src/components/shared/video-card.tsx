@@ -1,13 +1,8 @@
-import Link from "next/link"
-import { formatDistanceToNow } from "date-fns"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import type { VideoWithChannel } from "@/services/api"
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
-
-function formatViews(views: number): string {
-  if (views >= 1_000_000) return `${(views / 1_000_000).toFixed(1)}M`
-  if (views >= 1_000) return `${(views / 1_000).toFixed(1)}K`
-  return views.toString()
-}
+import { formatDistanceToNow } from "date-fns"
+import { formatViews } from "@/lib/utils"
+import Link from "next/link"
 
 interface VideoCardProps {
   video: VideoWithChannel
