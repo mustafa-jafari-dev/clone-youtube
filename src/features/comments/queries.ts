@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import { toast } from "sonner"
 import { getCommentsByVideoId, addComment } from "@/services/api"
 import type { Comment } from "@/types/comment"
 
@@ -41,6 +42,7 @@ export function useAddComment(videoId: string) {
       if (context?.previous) {
         queryClient.setQueryData(["comments", videoId], context.previous)
       }
+      toast.error("Sign in required to post comments")
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["comments", videoId] })

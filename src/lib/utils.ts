@@ -11,6 +11,4 @@ export function formatViews(views: number): string {
   return views.toString()
 }
 
-export function delay(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms))
-}
+

@@ -24,7 +24,7 @@ export function CommentItem({ comment }: CommentItemProps) {
             {formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}
           </span>
         </div>
-        <p className="mt-0.5 text-sm">{comment.content}</p>
+        <div className="mt-0.5 text-sm" dangerouslySetInnerHTML={{__html:comment.content}}/>
         <div className="mt-1 flex items-center gap-2">
           <Button variant="ghost" size="icon-xs" aria-label="Like">
             <ThumbsUp className="size-3.5" />

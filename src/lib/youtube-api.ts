@@ -1,8 +1,6 @@
 const API_KEY = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY
 const BASE_URL = "https://www.googleapis.com/youtube/v3"
 
-export const USE_REAL_API = !!API_KEY
-
 interface YouTubeListResponse<T> {
   items: T[]
   nextPageToken?: string

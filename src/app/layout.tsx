@@ -6,6 +6,7 @@ import { Providers } from "@/lib/providers"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/shared/app-sidebar"
 import { Header } from "@/components/shared/header"
+import { Toaster } from "@/components/ui/sonner"
 import { cn } from "@/lib/utils"
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
@@ -36,6 +37,7 @@ export default function RootLayout({
                 <div className="flex-1">{children}</div>
               </main>
             </SidebarProvider>
+            <Toaster />
           </Providers>
         </ThemeProvider>
       </body>

@@ -13,7 +13,7 @@ export function CategoryFilterBar() {
 
   return (
     <div className="sticky top-14 z-20 border-b bg-background">
-      <div className="flex gap-2 overflow-x-auto px-4 py-2 [&::-webkit-scrollbar]:hidden">
+      <div className="flex gap-2 overflow-x-auto px-4 py-2 [&::-webkit-scrollbar]:hidden flex-wrap">
         {isLoading
           ? Array.from({ length: 6 }).map((_, i) => (
               <Skeleton key={i} className="h-8 w-20 shrink-0 rounded-full" />
