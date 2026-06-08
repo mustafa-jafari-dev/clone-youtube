@@ -9,8 +9,8 @@ import { Menu, Search, Bell, Moon, Sun } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { useSidebar } from "@/components/ui/sidebar"
+import { AuthButton } from "@/features/auth/components/login-dialog"
 import Link from "next/link"
 
 const searchSchema = z.object({
@@ -106,13 +106,7 @@ export function Header() {
           <Bell />
         </Button>
 
-        <Avatar size="sm">
-          <AvatarImage
-            src="https://api.dicebear.com/9.x/avataaars/svg?seed=you"
-            alt="Your avatar"
-          />
-          <AvatarFallback>U</AvatarFallback>
-        </Avatar>
+        <AuthButton />
       </div>
     </header>
   )
