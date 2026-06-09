@@ -4,6 +4,7 @@ import { useParams } from "next/navigation"
 import { lazy, Suspense } from "react"
 
 import { useVideo } from "@/features/watch/queries"
+import { useTrackWatch } from "@/features/watch/hooks/use-track-watch"
 import { VideoPlayer } from "@/features/watch/components/video-player"
 import { VideoMeta } from "@/features/watch/components/video-meta"
 import { ErrorState } from "@/components/shared/error-state"
@@ -69,6 +70,8 @@ export default function WatchPage() {
   const params = useParams<{ videoId: string }>()
   const { data: video, isLoading, error } = useVideo(params.videoId)
 
+  useTrackWatch(video)
+
   if (isLoading) return <WatchSkeleton />
   if (error || !video)
     return <ErrorState title="Video not found" message="This video may not exist or has been removed." />
@@ -77,9 +80,8 @@ export default function WatchPage() {
     <div className="mx-auto flex max-w-[1800px] flex-col gap-4 p-4 lg:flex-row">
       <article className="min-w-0 flex-1 space-y-4">
         <VideoPlayer
-          thumbnailUrl={video.thumbnailUrl}
+          videoId={video.id}
           title={video.title}
-          duration={video.duration}
         />
         <VideoMeta video={video} />
         <Separator />

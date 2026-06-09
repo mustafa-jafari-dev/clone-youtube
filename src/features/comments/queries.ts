@@ -15,8 +15,17 @@ export function useAddComment(videoId: string) {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: ({ content, userName }: { content: string; userName: string }) =>
-      addComment(videoId, content, userName),
+    mutationFn: ({
+      content,
+      userName,
+      userAvatarUrl,
+      userId,
+    }: {
+      content: string
+      userName: string
+      userAvatarUrl: string
+      userId: string
+    }) => addComment(videoId, content, userName, userAvatarUrl, userId),
     onMutate: async (payload) => {
       await queryClient.cancelQueries({ queryKey: ["comments", videoId] })
       const previous = queryClient.getQueryData<Comment[]>(["comments", videoId])
@@ -24,12 +33,15 @@ export function useAddComment(videoId: string) {
       const optimistic: Comment = {
         id: "optimistic",
         content: payload.content,
-        userId: "u-current",
+        userId: payload.userId,
         videoId,
         likes: 0,
         repliesCount: 0,
         createdAt: new Date().toISOString(),
-        user: { name: payload.userName, avatarUrl: "https://api.dicebear.com/9.x/avataaars/svg?seed=current-user" },
+        user: {
+          name: payload.userName,
+          avatarUrl: payload.userAvatarUrl,
+        },
       }
 
       queryClient.setQueryData<Comment[]>(["comments", videoId], (old) =>
@@ -42,7 +54,7 @@ export function useAddComment(videoId: string) {
       if (context?.previous) {
         queryClient.setQueryData(["comments", videoId], context.previous)
       }
-      toast.error("Sign in required to post comments")
+      toast.error("Failed to post comment. Please try again.")
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["comments", videoId] })

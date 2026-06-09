@@ -4,8 +4,9 @@ import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useTheme } from "next-themes"
+import { useTheme } from "@/components/theme-provider"
 import { Menu, Search, Bell, Moon, Sun } from "lucide-react"
+import { useSyncExternalStore } from "react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -23,6 +24,11 @@ export function Header() {
   const router = useRouter()
   const { resolvedTheme, setTheme } = useTheme()
   const { toggleSidebar, setOpenMobile } = useSidebar()
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  )
 
   const { register, handleSubmit } = useForm<SearchFormData>({
     resolver: zodResolver(searchSchema),
@@ -99,7 +105,7 @@ export function Header() {
           onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
           aria-label="Toggle dark mode"
         >
-          {resolvedTheme === "dark" ? <Sun /> : <Moon />}
+          {mounted ? resolvedTheme === "dark" ? <Sun /> : <Moon /> : <div className="size-4" />}
         </Button>
 
         <Button variant="ghost" size="icon-sm" aria-label="Notifications">

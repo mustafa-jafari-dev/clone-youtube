@@ -8,6 +8,7 @@ import { AppSidebar } from "@/components/shared/app-sidebar"
 import { Header } from "@/components/shared/header"
 import { Toaster } from "@/components/ui/sonner"
 import { cn } from "@/lib/utils"
+import Script from "next/script"
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
 
@@ -27,6 +28,15 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cn("antialiased", fontMono.variable, "font-sans", geist.variable)}
     >
+      <head>
+        <Script
+          id="theme-init"
+          strategy="lazyOnload"
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var e=localStorage.getItem("theme"),t="system"===e||!e?window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light":e;document.documentElement.classList.remove("light","dark"),document.documentElement.classList.add(t)}catch(e){}})();`,
+          }}
+        />
+      </head>
       <body>
         <ThemeProvider>
           <Providers>

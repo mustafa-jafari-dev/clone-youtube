@@ -1,4 +1,4 @@
-export { getVideos, getVideoById, getRecommendedVideos, getVideosByCategory, searchVideos } from "./videos"
+export { getVideos, getVideoById, getRecommendedVideos, getVideosByCategory, searchVideos, getTrendingVideos } from "./videos"
 export type { VideoWithChannel } from "./videos"
 export { getChannelById, getChannelVideos, getSubscribedChannels, getChannelByHandle } from "./channels"
 export { getCommentsByVideoId, addComment } from "./comments"

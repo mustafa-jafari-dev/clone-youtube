@@ -10,19 +10,14 @@ import { VideoGridSkeleton } from "@/components/shared/video-card-skeleton"
 import { ErrorState } from "@/components/shared/error-state"
 import { EmptyState } from "@/components/shared/empty-state"
 import { Button } from "@/components/ui/button"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import { LoginForm } from "@/features/auth/components/login-dialog"
 
 export default function SubscriptionsPage() {
-  const { isLoggedIn } = useAuth()
+  const { isLoggedIn, isLoading: isAuthLoading, login } = useAuth()
   const { data: videos, isLoading, error } = useSubscriptionsFeed()
+
+  if (isAuthLoading) {
+    return <VideoGridSkeleton />
+  }
 
   if (!isLoggedIn) {
     return (
@@ -30,21 +25,10 @@ export default function SubscriptionsPage() {
         <Tv className="size-16" />
         <h1 className="text-xl font-semibold text-foreground">Don&apos;t miss new videos</h1>
         <p className="text-sm">Sign in to see updates from your subscriptions.</p>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button className="mt-2">
-              <LogIn className="mr-2 size-4" />
-              Sign in
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-sm">
-            <DialogHeader>
-              <DialogTitle>Sign in</DialogTitle>
-              <DialogDescription>Enter your name to get started (mock auth).</DialogDescription>
-            </DialogHeader>
-            <LoginForm />
-          </DialogContent>
-        </Dialog>
+        <Button className="mt-2" onClick={() => login()}>
+          <LogIn className="mr-2 size-4" />
+          Sign in with Google
+        </Button>
       </div>
     )
   }

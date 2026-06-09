@@ -66,3 +66,15 @@ export async function searchVideos(query: string): Promise<VideoWithChannel[]> {
   const videoIds = await searchAndEnrich(query, 12)
   return fetchAndEnrichVideos(videoIds)
 }
+
+export async function getTrendingVideos(): Promise<VideoWithChannel[]> {
+  const data = await youtubeFetch<YouTubeSearchItem>("search", {
+    part: "snippet",
+    type: "video",
+    order: "viewCount",
+    maxResults: "12",
+    regionCode: "US",
+  })
+  const videoIds = (data.items ?? []).map((item) => item.id.videoId)
+  return fetchAndEnrichVideos(videoIds)
+}
