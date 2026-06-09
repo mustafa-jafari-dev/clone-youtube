@@ -1,16 +1,19 @@
-import { Geist, Geist_Mono } from "next/font/google"
+import { Geist_Mono, Vazirmatn } from "next/font/google"
 
-import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
-import { Providers } from "@/lib/providers"
-import { SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/shared/app-sidebar"
 import { Header } from "@/components/shared/header"
+import { ThemeProvider } from "@/components/theme-provider"
+import { SidebarProvider } from "@/components/ui/sidebar"
 import { Toaster } from "@/components/ui/sonner"
+import { Providers } from "@/lib/providers"
 import { cn } from "@/lib/utils"
 import Script from "next/script"
+import "./globals.css"
 
-const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
+const geist = Vazirmatn({ 
+  subsets: ["arabic","latin","latin-ext"], 
+  variable: "--font-sans",
+})
 
 const fontMono = Geist_Mono({
   subsets: ["latin"],
